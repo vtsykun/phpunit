@@ -1178,6 +1178,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
+    }
+
+    /**
      * Returns true if the tests has dependencies
      *
      * @return bool
