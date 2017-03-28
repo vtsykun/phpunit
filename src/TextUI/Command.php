@@ -207,6 +207,7 @@ class Command
 
         unset($this->arguments['test']);
         unset($this->arguments['testFile']);
+        $this->resolveTestSuite($suite);
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
@@ -785,7 +786,6 @@ class Command
                 $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['testsuite']) ? $this->arguments['testsuite'] : null);
 
                 if ($testSuite !== null) {
-                    $this->resolveTestSuite($testSuite);
                     $this->arguments['test'] = $testSuite;
                 }
             }

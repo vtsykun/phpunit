@@ -96,7 +96,7 @@ use Throwable;
  * ?>
  * </code>
  */
-abstract class TestCase extends Assert implements Test, SelfDescribing
+abstract class TestCase extends Assert implements DependentTestInterface, SelfDescribing
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -1178,7 +1178,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getDependencies()
     {

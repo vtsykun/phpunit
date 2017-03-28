@@ -2,7 +2,7 @@
 
 namespace PHPUnit\Util\DependencyResolver;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\DependentTestInterface;
 use PHPUnit\Framework\TestSuite;
 
 class Solver
@@ -26,10 +26,14 @@ class Solver
         foreach ($testSuite->tests() as $test) {
             if ($test instanceof TestSuite) {
                 $problems[] = $this->resolveDependency($test);
+                continue;
             }
 
-            if ($test instanceof TestCase) {
+            if ($test instanceof DependentTestInterface) {
                 $problems[] = new Problem($test->getName(), $test, $test->getDependencies());
+            } else {
+                $testName = is_callable([$test, 'getName']) ? $test->getName() : spl_object_hash($test);
+                $problems[] = new Problem($testName, $test);
             }
         }
 
@@ -43,19 +47,26 @@ class Solver
      */
     protected function mergeProblems(array $problems, $testSuite)
     {
-        $tests = [];
-        $poolProblems = [];
-        $dependencies = [];
+        list ($tests, $poolProblems, $inPool, $dependencies) = [[], [], [], []];
         foreach ($problems as $problem) {
             $poolProblems[$problem->getName()][] = $problem;
         }
 
-        $resolver = function (Problem $problem, array $tests = []) use (&$resolver, $poolProblems, $dependencies) {
-            $dependencies[$problem->getName()] = true;
+        $resolver = function (
+            Problem $problem,
+            array $tests = []
+        ) use (
+            &$resolver,
+            &$inPool,
+            &$dependencies,
+            $poolProblems
+        ) {
+            $inPool[$problem->getName()] = true;
 
             while (!$problem->isEmpty()) {
                 $dependency = $problem->pop();
-                if (!array_key_exists($dependency, $dependencies) && array_key_exists($dependency, $poolProblems)) {
+                $dependencies[] = $dependency;
+                if (!array_key_exists($dependency, $inPool) && array_key_exists($dependency, $poolProblems)) {
                     /** @var Problem $element */
                     foreach ($poolProblems[$dependency] as $nextProblem) {
                         $tests = $resolver($nextProblem, $tests);
@@ -75,6 +86,6 @@ class Solver
         }
         $testSuite->setTests($tests);
 
-        return new Problem($testSuite->getName(), $testSuite, array_keys($dependencies));
+        return new Problem($testSuite->getName(), $testSuite, array_unique($dependencies));
     }
 }
