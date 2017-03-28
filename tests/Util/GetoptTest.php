@@ -7,10 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Getopt;
 
-class Util_GetoptTest extends TestCase
+namespace PHPUnit\Util;
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Exception;
+
+class GetoptTest extends TestCase
 {
     public function testItIncludeTheLongOptionsAfterTheArgument()
     {
@@ -68,7 +71,7 @@ class Util_GetoptTest extends TestCase
             '-v',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('unrecognized option -- v');
 
         Getopt::getopt($args, '');
@@ -82,7 +85,7 @@ class Util_GetoptTest extends TestCase
             '-f',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('option requires an argument -- f');
 
         Getopt::getopt($args, 'f:');
@@ -117,7 +120,7 @@ class Util_GetoptTest extends TestCase
             '--col',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('option --col is ambiguous');
 
         Getopt::getopt($args, '', ['columns', 'colors']);
@@ -132,7 +135,7 @@ class Util_GetoptTest extends TestCase
             '--foo',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('unrecognized option --foo');
 
         Getopt::getopt($args, '', ['colors']);
@@ -145,7 +148,7 @@ class Util_GetoptTest extends TestCase
             '--foo',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('option --foo requires an argument');
 
         Getopt::getopt($args, '', ['foo=']);
@@ -158,7 +161,7 @@ class Util_GetoptTest extends TestCase
             '--foo=bar',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage("option --foo doesn't allow an argument");
 
         Getopt::getopt($args, '', ['foo']);

@@ -2,10 +2,20 @@
 
 All notable changes of the PHPUnit 6.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.0.9] - 2017-MM-DD
+## [6.0.10] - 2017-03-19
 
 ### Fixed
 
+* Fixed [#2016](https://github.com/sebastianbergmann/phpunit/issues/2016): `prophesize()` does not work when static attributes are backed up
+* Fixed [#2568](https://github.com/sebastianbergmann/phpunit/issues/2568): `ArraySubsetConstraint` uses invalid cast to array
+* Fixed [#2573](https://github.com/sebastianbergmann/phpunit/issues/2573): `getMockFromWsdl()` does not handle URLs with query parameters
+* `PHPUnit\Util\Test::getDataFromTestWithAnnotation()` raises notice when docblock contains Windows line endings
+
+## [6.0.9] - 2017-03-15
+
+### Fixed
+
+* Fixed [#2547](https://github.com/sebastianbergmann/phpunit/issues/2547): Code Coverage data is collected for test annotated with `@coversNothing`
 * Fixed [#2558](https://github.com/sebastianbergmann/phpunit/issues/2558): `countOf()` function is missing
 
 ## [6.0.8] - 2017-03-02
@@ -121,6 +131,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
+[6.0.10]: https://github.com/sebastianbergmann/phpunit/compare/6.0.9...6.0.10
 [6.0.9]: https://github.com/sebastianbergmann/phpunit/compare/6.0.8...6.0.9
 [6.0.8]: https://github.com/sebastianbergmann/phpunit/compare/6.0.7...6.0.8
 [6.0.7]: https://github.com/sebastianbergmann/phpunit/compare/6.0.6...6.0.7
