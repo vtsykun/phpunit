@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace PHPUnit\Util\DependencyResolver;
 
@@ -37,15 +45,15 @@ class Solver
             }
         }
 
-        return $this->mergeProblems($problems, $testSuite);
+        return $this->mergeProblems($testSuite, $problems);
     }
 
     /**
-     * @param Problem[] $problems
      * @param TestSuite $testSuite
+     * @param Problem[] $problems
      * @return Problem
      */
-    protected function mergeProblems(array $problems, $testSuite)
+    protected function mergeProblems(TestSuite $testSuite, array $problems)
     {
         list ($tests, $poolProblems, $inPool, $dependencies) = [[], [], [], []];
         foreach ($problems as $problem) {
